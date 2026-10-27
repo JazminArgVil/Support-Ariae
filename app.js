@@ -411,68 +411,100 @@
   // 5. PANEL DOCENTE - SELECT protegido por RLS
   // ==========================================================
   async function loadAdminReports() {
-    if (!tableBodyBugs) return;
+  if (!tableBodyBugs) return;
+
+  tableBodyBugs.innerHTML = `
+    <tr>
+      <td colspan="6" class="text-center" style="padding:24px;color:#94A3B8;">
+        Cargando reportes desde Supabase...
+      </td>
+    </tr>`;
+
+  const { data, error } = await db
+    .from('tickets')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('loadAdminReports:', error);
 
     tableBodyBugs.innerHTML = `
       <tr>
-        <td colspan="6" class="text-center" style="padding:24px;color:#94A3B8;">
-          Cargando reportes desde Supabase...
+        <td colspan="6" class="text-center" style="padding:24px;color:#EF4444;">
+          Error al cargar los reportes: ${escapeHtml(error.message)}
         </td>
       </tr>`;
 
-    const { data, error } = await db
-      .from('tickets')
-      .select('*')
-      .order('created_at', { ascending: false });
+    return;
+  }
 
-    if (error) {
-      console.error('loadAdminReports:', error);
-      tableBodyBugs.innerHTML = `
-        <tr>
-          <td colspan="6" class="text-center" style="padding:24px;color:#EF4444;">
-            Error al cargar los reportes: ${escapeHtml(error.message)}
-          </td>
-        </tr>`;
-      return;
-    }
+  cachedBugs = data || [];
 
-    cachedBugs = data || [];
+  if (!cachedBugs.length) {
+    tableBodyBugs.innerHTML = `
+      <tr>
+        <td colspan="6" class="text-center" style="padding:24px;color:#94A3B8;">
+          No hay tickets registrados todavía.
+        </td>
+      </tr>`;
 
-    if (!cachedBugs.length) {
-      tableBodyBugs.innerHTML = `
-        <tr>
-          <td colspan="6" class="text-center" style="padding:24px;color:#94A3B8;">
-            No hay tickets registrados todavía.
-          </td>
-        </tr>`;
-      return;
-    }
+    return;
+  }
 
-    tableBodyBugs.innerHTML = cachedBugs.map((bug) => {
-      const badgeClass = getStatusBadgeClass(bug.status);
+  tableBodyBugs.innerHTML = cachedBugs.map((bug) => {
+    const badgeClass = getStatusBadgeClass(bug.status);
 
-      return `
-        <tr>
-          <td class="font-code ticket-tag">${escapeHtml(bug.ticket_code)}</td>
-          <td><span class="status-badge ${badgeClass}">${escapeHtml(formatStatus(bug.status))}</span></td>
-          <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${escapeHtml(bug.title)}">
-            ${escapeHtml(bug.title)}
-          </td>
-          <td style="color:#64748B;">${escapeHtml(bug.reporter_name || 'Anónimo')}</td>
-          <td style="color:#94A3B8;">${new Date(bug.created_at).toLocaleDateString('es-AR')}</td>
-          <td class="text-right">
-            <button type="button" class="btn btn-secondary btn-sm btn-manage" data-id="${escapeHtml(String(bug.id))}">Gestionar</button>
-          </td>
-        </tr>`;
-    }).join('');
+    return `
+      <tr>
 
-    tableBodyBugs.querySelectorAll('.btn-manage').forEach((button) => {
+        <td class="font-code ticket-tag">
+          ${escapeHtml(bug.ticket_code)}
+        </td>
+
+        <td>
+          <span class="status-badge ${badgeClass}">
+            ${escapeHtml(formatStatus(bug.status))}
+          </span>
+        </td>
+
+        <td
+          style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"
+          title="${escapeHtml(bug.title)}"
+        >
+          ${escapeHtml(bug.title)}
+        </td>
+
+        <td style="color:#64748B;">
+          ${escapeHtml(bug.reporter_name || 'Anónimo')}
+        </td>
+
+        <td style="color:#94A3B8;">
+          ${new Date(bug.created_at).toLocaleDateString('es-AR')}
+        </td>
+
+        <td class="text-right">
+          <button
+            type="button"
+            class="btn btn-secondary btn-sm btn-manage"
+            data-id="${escapeHtml(String(bug.id))}"
+          >
+            Gestionar
+          </button>
+        </td>
+
+      </tr>`;
+  }).join('');
+
+  tableBodyBugs
+    .querySelectorAll('.btn-manage')
+    .forEach((button) => {
+
       button.addEventListener('click', () => {
         openInspect(button.getAttribute('data-id'));
       });
-    });
-  }
 
+    });
+}
   // ==========================================================
   // 6. MODAL DE GESTIÓN - UPDATE protegido por RLS
   // ==========================================================
