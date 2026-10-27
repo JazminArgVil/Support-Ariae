@@ -415,7 +415,7 @@
 
     tableBodyBugs.innerHTML = `
       <tr>
-        <td colspan="7" class="text-center" style="padding:24px;color:#94A3B8;">
+        <td colspan="6" class="text-center" style="padding:24px;color:#94A3B8;">
           Cargando reportes desde Supabase...
         </td>
       </tr>`;
@@ -429,7 +429,7 @@
       console.error('loadAdminReports:', error);
       tableBodyBugs.innerHTML = `
         <tr>
-          <td colspan="7" class="text-center" style="padding:24px;color:#EF4444;">
+          <td colspan="6" class="text-center" style="padding:24px;color:#EF4444;">
             Error al cargar los reportes: ${escapeHtml(error.message)}
           </td>
         </tr>`;
