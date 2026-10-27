@@ -441,7 +441,7 @@
     if (!cachedBugs.length) {
       tableBodyBugs.innerHTML = `
         <tr>
-          <td colspan="7" class="text-center" style="padding:24px;color:#94A3B8;">
+          <td colspan="6" class="text-center" style="padding:24px;color:#94A3B8;">
             No hay tickets registrados todavía.
           </td>
         </tr>`;
@@ -458,7 +458,6 @@
           <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${escapeHtml(bug.title)}">
             ${escapeHtml(bug.title)}
           </td>
-          <td style="color:#64748B;">${escapeHtml(bug.device)}</td>
           <td style="color:#64748B;">${escapeHtml(bug.reporter_name || 'Anónimo')}</td>
           <td style="color:#94A3B8;">${new Date(bug.created_at).toLocaleDateString('es-AR')}</td>
           <td class="text-right">
