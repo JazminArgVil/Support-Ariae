@@ -99,14 +99,14 @@
         <nav class="tabs-nav" aria-label="Secciones de soporte">
             <button id="tabBtnReport" type="button" class="tab-button tab-button-active">Reportar Bug</button>
             <button id="tabBtnTrack" type="button" class="tab-button">Rastrear Ticket</button>
-            <button id="tabBtnAdmin" type="button" class="tab-button tab-button-admin">Panel Docente</button>
+            <button id="tabBtnAdmin" type="button" class="tab-button tab-button-admin">Panel Desarrolladores</button>
         </nav>
 
         <!-- PESTAÑA 1: FORMULARIO DE REPORTE -->
         <section id="paneReport" class="pane-content pane-active" aria-labelledby="report-heading">
             <div class="card-box form-card">
                 <h2 id="report-heading" class="card-title">Registrar Incidencia</h2>
-                <p class="card-subtitle">Completa el formulario para que el equipo docente revise el comportamiento
+                <p class="card-subtitle">Completa el formulario para que el equipo Desarrolladores revise el comportamiento
                     anómalo.</p>
 
                 <form id="formBug" class="support-form">
@@ -192,20 +192,20 @@
             </div>
         </section>
 
-        <!-- PESTAÑA 3: PANEL DOCENTE -->
+        <!-- PESTAÑA 3: PANEL Desarrolladores -->
         <section id="paneAdmin" class="pane-content" aria-labelledby="admin-heading">
 
-            <!-- Acceso docente mediante Supabase Auth -->
+            <!-- Acceso Desarrolladores mediante Supabase Auth -->
             <div id="adminPinGate" class="card-box pin-gate-card">
                 <div class="lock-icon" aria-hidden="true">🔒</div>
-                <h2 id="admin-heading" class="card-title">Acceso Docente</h2>
-                <p class="card-subtitle">Inicia sesión con la cuenta docente autorizada.</p>
+                <h2 id="admin-heading" class="card-title">Acceso Desarrolladores</h2>
+                <p class="card-subtitle">Inicia sesión con la cuenta Desarrolladores autorizada.</p>
 
                 <div class="admin-login-fields">
                     <div class="form-group">
                         <label for="adminEmail" class="form-label">Correo</label>
                         <input type="email" id="adminEmail" class="form-control" autocomplete="username"
-                            placeholder="docente@fpuna.edu.py">
+                            placeholder="Desarrolladores@fpuna.edu.py">
                     </div>
 
                     <div class="form-group">
@@ -224,7 +224,7 @@
                 <div class="admin-topbar">
                     <span class="active-session-indicator">
                         <span class="pulse-dot"></span>
-                        Sesión Docente Activa
+                        Sesión Desarrolladores Activa
                     </span>
                     <div class="admin-actions">
                         <button id="btnReloadAdmin" type="button" class="btn btn-secondary btn-sm">Actualizar</button>
